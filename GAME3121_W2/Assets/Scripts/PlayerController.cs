@@ -16,11 +16,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TMP_Text winText;
     [SerializeField] NavMeshAgent Enemy;
 
+    [SerializeField] AudioClip coinPickup;
+    [SerializeField] AudioClip wallHit;
+    AudioSource audioSource;
+
+    [SerializeField] AudioClip bgMusic;
+    [SerializeField] AudioClip winMusic;
+    AudioSource musicSource;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         score = 0;
         winText.gameObject.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.loop = true;
+        musicSource.playOnAwake = false;
+        musicSource.volume = 0.25f;
+        musicSource.clip = bgMusic;
+        musicSource.Play();
     }
 
 
@@ -45,6 +61,7 @@ public class PlayerController : MonoBehaviour
         {
 
             other.gameObject.SetActive(false);
+            audioSource.PlayOneShot(coinPickup, 2.0f);
             score++;
             text.text = "Count: " + score.ToString();
 
@@ -52,7 +69,11 @@ public class PlayerController : MonoBehaviour
             {
                 winText.gameObject.SetActive(true);
                 Enemy.gameObject.SetActive(false);
-                
+
+                musicSource.Stop();
+                musicSource.clip = winMusic;
+                musicSource.Play();
+
             }
         }
     }
@@ -65,6 +86,11 @@ public class PlayerController : MonoBehaviour
             winText.text = "You Lose!";
             winText.gameObject.SetActive(true);
 
+        }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            audioSource.PlayOneShot(wallHit, 3.0f);
         }
     }
 
