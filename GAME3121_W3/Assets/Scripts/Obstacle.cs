@@ -11,10 +11,17 @@ public class Obstacle : MonoBehaviour
     [SerializeField] GameObject ps;
 
     Rigidbody2D rb;
+
+    [SerializeField] AudioClip obstacleCollision;
+    [SerializeField] AudioClip playerCollision;
+    AudioSource audioSource;
+
     void Start()
     {
         
         rb = GetComponent<Rigidbody2D>();
+
+        audioSource = GetComponent<AudioSource>();
 
         //size
         float randomSize = Random.Range(minSize, maxSize);
@@ -35,10 +42,17 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
+            audioSource.PlayOneShot(obstacleCollision, 0.75f);
             GameObject particleSystemPrefab;
             particleSystemPrefab = Instantiate(ps, this.gameObject.transform.position, Quaternion.identity);
             Destroy(particleSystemPrefab, 2.0f);
             
+        }
+
+        if (collision.gameObject.CompareTag("player"))
+        {
+
+            audioSource.PlayOneShot(playerCollision, 0.25f);
         }
 
     }
