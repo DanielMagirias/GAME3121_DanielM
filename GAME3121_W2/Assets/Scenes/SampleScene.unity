@@ -1677,6 +1677,7 @@ MonoBehaviour:
   wallHit: {fileID: 8300000, guid: 038ee28fc2b1ef840aad4e721c26dfdc, type: 3}
   bgMusic: {fileID: 8300000, guid: fffe778512d911d4ab714a72d414be06, type: 3}
   winMusic: {fileID: 8300000, guid: 5ffb74eb920b0804eb463182a605e1e5, type: 3}
+  pickupEffect: {fileID: 3295956444471829302, guid: 571357e2740398d4a98dd044b46ac9c1, type: 3}
 --- !u!114 &794864857
 MonoBehaviour:
   m_ObjectHideFlags: 0

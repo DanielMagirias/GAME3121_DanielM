@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip winMusic;
     AudioSource musicSource;
 
+    [SerializeField] GameObject pickupEffect;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -59,7 +61,9 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pickup"))
         {
-
+            Vector3 pickupPos = other.gameObject.transform.position;
+            GameObject pickupParticleSpawn = Instantiate(pickupEffect, pickupPos, Quaternion.identity);
+            Destroy(pickupParticleSpawn, 2.0f);
             other.gameObject.SetActive(false);
             audioSource.PlayOneShot(coinPickup, 2.0f);
             score++;
