@@ -9,6 +9,8 @@ public class EnemyMovement : MonoBehaviour
 
     AudioSource audioSource;
     [SerializeField] AudioClip explosion;
+
+    [SerializeField] GameObject explosionEffect;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -27,6 +29,9 @@ public class EnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("playerChar"))
         {
+            Vector3 explosionPos = collision.gameObject.transform.position;
+            GameObject explosionParticleSpawn = Instantiate(explosionEffect, explosionPos, Quaternion.identity);
+            Destroy(explosionParticleSpawn, 2.0f);
             audioSource.PlayOneShot(explosion, 0.2f);
 
         }

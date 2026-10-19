@@ -248,6 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   player: {fileID: 794864854}
   explosion: {fileID: 8300000, guid: fac2b1eb224bdaa4dbf8bec6fe339272, type: 3}
+  explosionEffect: {fileID: 4188179331069783614, guid: 747430500735cd74995a58738767347f, type: 3}
 --- !u!82 &104261466
 AudioSource:
   m_ObjectHideFlags: 0
