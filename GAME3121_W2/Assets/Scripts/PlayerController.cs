@@ -25,6 +25,11 @@ public class PlayerController : MonoBehaviour
     AudioSource musicSource;
 
     [SerializeField] GameObject pickupEffect;
+    [SerializeField] GameObject moveEffect;
+
+    private ParticleSystem moveParticle;
+    private ParticleSystem.EmissionModule moveEmission;
+    [SerializeField] private Vector3 dustOffset = new Vector3(0, -0.3f, -0.6f);
 
     void Start()
     {
@@ -39,6 +44,12 @@ public class PlayerController : MonoBehaviour
         musicSource.volume = 0.25f;
         musicSource.clip = bgMusic;
         musicSource.Play();
+
+        moveParticle = moveEffect.GetComponent<ParticleSystem>();
+        moveEmission = moveParticle.emission;
+
+        moveParticle.Play();
+        moveEmission.enabled = false;
     }
 
 
@@ -46,11 +57,29 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 movement = new Vector3 (movementX, 0.0f, movementZ);
         rb.AddForce(movement * movementSpeed);
+
+        bool isMoving = movement.magnitude > 0.1f;
+        moveEmission.enabled = isMoving;
+
+        if (isMoving)
+        {
+            
+            Vector3 moveDirection = movement.normalized;
+
+            moveEffect.transform.position = transform.position - moveDirection * 0.6f;
+
+            moveEffect.transform.rotation = Quaternion.LookRotation(-moveDirection);
+        }
+
+        else
+        {
+
+            moveEffect.transform.position = transform.position;
+        }
     }
 
     void OnMove (InputValue movementValue)
     {
-
         Vector2 movementVector = movementValue.Get<Vector2>();
         movementX = movementVector.x;
         movementZ = movementVector.y;
