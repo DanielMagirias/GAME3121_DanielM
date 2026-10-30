@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] AudioClip bgMusic;
     [SerializeField] AudioClip winMusic;
-    AudioSource musicSource;
+    public AudioSource musicSource;
 
     [SerializeField] GameObject pickupEffect;
     [SerializeField] GameObject moveEffect;
@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private ParticleSystem moveParticle;
     private ParticleSystem.EmissionModule moveEmission;
     [SerializeField] private Vector3 dustOffset = new Vector3(0, -0.3f, -0.6f);
+
+    private UIManager ui;
 
     void Start()
     {
@@ -50,31 +52,36 @@ public class PlayerController : MonoBehaviour
 
         moveParticle.Play();
         moveEmission.enabled = false;
+
+        ui = FindAnyObjectByType<UIManager>();
     }
 
 
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3 (movementX, 0.0f, movementZ);
-        rb.AddForce(movement * movementSpeed);
-
-        bool isMoving = movement.magnitude > 0.1f;
-        moveEmission.enabled = isMoving;
-
-        if (isMoving)
+        if (ui.bIsPlaying)
         {
-            
-            Vector3 moveDirection = movement.normalized;
+            Vector3 movement = new Vector3(movementX, 0.0f, movementZ);
+            rb.AddForce(movement * movementSpeed);
 
-            moveEffect.transform.position = transform.position - moveDirection * 0.6f;
+            bool isMoving = movement.magnitude > 0.1f;
+            moveEmission.enabled = isMoving;
 
-            moveEffect.transform.rotation = Quaternion.LookRotation(-moveDirection);
-        }
+            if (isMoving)
+            {
 
-        else
-        {
+                Vector3 moveDirection = movement.normalized;
 
-            moveEffect.transform.position = transform.position;
+                moveEffect.transform.position = transform.position - moveDirection * 0.6f;
+
+                moveEffect.transform.rotation = Quaternion.LookRotation(-moveDirection);
+            }
+
+            else
+            {
+
+                moveEffect.transform.position = transform.position;
+            }
         }
     }
 

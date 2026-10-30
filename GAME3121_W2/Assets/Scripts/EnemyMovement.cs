@@ -11,17 +11,26 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] AudioClip explosion;
 
     [SerializeField] GameObject explosionEffect;
+
+    private UIManager ui;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
+        ui = FindAnyObjectByType<UIManager>();
     }
 
     void Update()
     {
+        if (ui.bIsPlaying && agent.speed == 0.0f)
+        {
+            agent.speed = 2.0f;
+        }
+
         if (player != null)
         {
             agent.SetDestination(player.position);
+            
         }
     }
 
@@ -35,5 +44,10 @@ public class EnemyMovement : MonoBehaviour
             audioSource.PlayOneShot(explosion, 0.2f);
 
         }
+    }
+
+    public void SetSpeed(float speed)
+    {
+        agent.speed = speed;
     }
 }
